@@ -19,7 +19,7 @@ class TableWriter(abc.ABC):
 
 
 class ExcelWriter(TableWriter):
-    __default_file_path = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
+    DEFAULT_FILE_PATH = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
 
     def __init__(self, rows: Iterable[Iterable]):
         super().__init__(rows)
@@ -30,5 +30,5 @@ class ExcelWriter(TableWriter):
         self.__rows = rows
         self.__dataframe = pd.DataFrame(data=rows)
 
-    def write_to_file(self, file_path: str = __default_file_path, header: Iterable[str] = None):
+    def write_to_file(self, file_path: str = DEFAULT_FILE_PATH, header: Iterable[str] = None):
         self.__dataframe.to_excel(file_path, index=False, header=header)
