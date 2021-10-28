@@ -9,7 +9,6 @@ class EbayParser:
     Item = namedtuple("Item", ["name", "price"])
 
     def __init__(self, requester: Requester) -> None:
-        super().__init__(requester)
         self.__requester: Requester = requester
         self.__soups: List[bs4.BeautifulSoup] = self._get_soups()
 
