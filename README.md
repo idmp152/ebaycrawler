@@ -31,7 +31,38 @@ Supported file formats:
 <li>asyncio</li>
 <li>aiohttp</li>
 <li>requests</li>
+<li>pandas</li>
 See requirements.txt for quick install. 
 
 ## Documentation
-WIP
+
+### Class
+```python
+class fileio.writers.TableWriter(rows: Iterable[Iterable])
+```
+Abstract class that details common operations on table-type files like .xlsx or .csv
+
+***
+
+### Class
+```python
+class fileio.writers.ExcelWriter(rows: Iterable[Iterable])
+```
+Class that implements `fileio.writers.TableWriter` and details writing operations on the .xlsx format.
+
+#### Methods
+```python
+def write_to_file(self, file_path: str = <default file path>, header: Iterable[str] = None)
+```
+Writes the given rows to an .xlsx file with the specified path and header row.
+
+```python
+def set_rows(rows: Iterable[Iterable])
+```
+Updates the inner rows field that uses in the `write_to_file` method.
+
+#### Fields
+```python
+DEFAULT_FILE_PATH = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
+```
+Default path to save `write_to_file` files.
