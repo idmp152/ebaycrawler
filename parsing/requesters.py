@@ -31,7 +31,7 @@ class SynchronousRequester(Requester):
     def set_urls(self, urls: Iterable[str]):
         self.__urls = urls
 
-    def parse_urls(self) -> Iterable[str]:
+    def parse_urls(self) -> List[str]:
         return [self._parse_single(url) for url in self.__urls]
 
     def _parse_single(self, url) -> str:
