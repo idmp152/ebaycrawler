@@ -59,10 +59,98 @@ Writes the given rows to an .xlsx file with the specified path and header row.
 ```python
 def set_rows(rows: Iterable[Iterable])
 ```
-Updates the inner rows field that uses in the `write_to_file` method.
+Updates the inner rows field that is used in the `write_to_file` method.
 
 #### Fields
 ```python
 DEFAULT_FILE_PATH = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
 ```
 Default path to save `write_to_file` files.
+
+***
+
+### Class
+```python
+class parsing.requesters.Requester(urls: Iterable[str])
+```
+Abstract class that details common requesting operations.
+
+***
+### Class
+```python
+class parsing.requesters.SynchronousRequester(urls: Iterable[str])
+```
+
+Class that implements `parsing.requesters.Requester` and details synchronous requesting operations.
+
+#### Methods
+```python
+def parse_urls() -> List[str]
+```
+Parses the given urls and returns a list of responses.
+
+```python
+def set_urls(urls: Iterable[str])
+```
+Updates the inner urls field that is used in the `parse_urls` method.
+
+***
+### Class
+```python
+class parsing.requesters.AsynchronousRequester(urls: Iterable[str])
+```
+Class that implements `parsing.requesters.Requester` and details asynchronous requesting operations.
+
+#### Methods
+```python
+def parse_urls() -> List[str]
+```
+Parses the given urls and returns a list of responses.
+
+```python
+def set_urls(urls: Iterable[str])
+```
+Updates the inner urls field that is used in the `parse_urls` method.
+***
+### Class
+```python
+class parsing.parsers.EbayParser(requester: Requester)
+```
+Class that details item parsing operations on the eBay site.
+
+#### Methods
+```python
+def parse_items_from_list_pages() -> List[Item]
+```
+Parses items from the given Requester.
+
+```python
+def set_requester(requester: Requester)
+```
+Updates the inner requester field that is used in the parsing methods.
+#### Fields
+```python
+Item = namedtuple("Item", ["name", "price"])
+```
+Namedtuple that represents the eBay item type.
+***
+### Class
+```python
+class ParsingModes
+```
+Enum that represents eBay parsing modes e.g. ParsingModes.LIST.
+
+#### Methods
+```python
+@staticmethod
+def get_mode_by_string(string: str)
+```
+Method that returns ParsingModes enum value depending on the given string.
+
+#### Fields
+```python
+LIST_PAGE = auto()
+```
+```python
+UNKNOWN = auto()
+```
