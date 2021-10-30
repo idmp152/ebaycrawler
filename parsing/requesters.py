@@ -7,7 +7,7 @@ from typing import Iterable, List
 
 class Requester(abc.ABC):
     @abc.abstractmethod
-    def __init__(self, urls: Iterable[str]):
+    def __init__(self, urls: Iterable[str]) -> None:
         pass
 
     @abc.abstractmethod
@@ -19,16 +19,16 @@ class Requester(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def set_urls(self, urls: Iterable[str]):
+    def set_urls(self, urls: Iterable[str]) -> None:
         pass
 
 
 class SynchronousRequester(Requester):
-    def __init__(self, urls: Iterable[str]):
+    def __init__(self, urls: Iterable[str]) -> None:
         super().__init__(urls)
         self.__urls: Iterable[str] = urls
 
-    def set_urls(self, urls: Iterable[str]):
+    def set_urls(self, urls: Iterable[str]) -> None:
         self.__urls = urls
 
     def parse_urls(self) -> List[str]:
@@ -39,13 +39,13 @@ class SynchronousRequester(Requester):
 
 
 class AsynchronousRequester(Requester):
-    def __init__(self, urls: Iterable[str]):
+    def __init__(self, urls: Iterable[str]) -> None:
         super().__init__(urls)
         self.__urls = urls
         self.__event_loop = asyncio.get_event_loop()
         self.__session = None
 
-    def set_urls(self, urls: Iterable[str]):
+    def set_urls(self, urls: Iterable[str]) -> None:
         self.__urls = urls
 
     def parse_urls(self) -> List[str]:
