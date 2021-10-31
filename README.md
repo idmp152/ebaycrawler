@@ -138,19 +138,9 @@ Namedtuple that represents the eBay item type.
 ```python
 class ParsingModes
 ```
-Enum that represents eBay parsing modes e.g. ParsingModes.LIST.
-
-#### Methods
-```python
-@staticmethod
-def get_mode_by_string(string: str)
-```
-Method that returns ParsingModes enum value depending on the given string.
+Enum that represents eBay parsing modes e.g. ParsingModes.LIST. Can be created from a string.
 
 #### Fields
 ```python
-LIST_PAGE = auto()
-```
-```python
-UNKNOWN = auto()
+LIST_PAGE = "list"
 ```
