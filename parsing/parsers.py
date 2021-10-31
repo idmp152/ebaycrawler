@@ -2,7 +2,7 @@ import bs4
 from parsing.requesters import Requester
 from collections import namedtuple
 from typing import List
-from enum import Enum, auto
+from enum import Enum
 
 
 class EbayParser:
@@ -21,11 +21,9 @@ class EbayParser:
         for soup in self.__soups:
             names = soup.find_all("img", {"class": "s-item__image-img"})
             prices = soup.find_all("span", {"class": "s-item__price"})  # TODO: Fix price ranges pasrsing e.g. 12-15$
-            names_iter = iter(names)
-            prices_iter = iter(prices)
-            for _ in names:
-                item_name = next(names_iter)["alt"]
-                item_price = float(''.join(next(prices_iter)
+            for name, price in zip(names, prices):
+                item_name = name["alt"]
+                item_price = float(''.join(price
                                            .string.split(' ')[:-1])
                                    .replace('\xa0', '')
                                    .replace(',', '.'))
@@ -36,17 +34,7 @@ class EbayParser:
         return [bs4.BeautifulSoup(html, "html.parser") for html in self.__requester.parse_urls()]
 
 
-class ParsingModes(Enum):
-    LIST_PAGE = auto()
+class ParsingModes(str, Enum):
+    LIST_PAGE = "list"
     # TODO: Do CARD_PAGE parsing
-    UNKNOWN = auto()
-
-    @staticmethod
-    def get_mode_by_string(string: str):
-        string = string.lower()
-        if string == "list":
-            return ParsingModes.LIST_PAGE
-        # elif string == "card":
-        #     return ParsingModes.CARD_PAGE
-        else:
-            return ParsingModes.UNKNOWN
+    UNKNOWN = "unknown"
