@@ -37,4 +37,3 @@ class EbayParser:
 class ParsingModes(str, Enum):
     LIST_PAGE = "list"
     # TODO: Do CARD_PAGE parsing
-    UNKNOWN = "unknown"
