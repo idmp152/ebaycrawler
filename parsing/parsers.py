@@ -20,11 +20,11 @@ class EbayParser:
         items: List[EbayParser.Item] = []
         for soup in self.__soups:
             names = soup.find_all("img", {"class": "s-item__image-img"})
-            prices = soup.find_all("span", {"class": "s-item__price"})  # TODO: Fix price ranges pasrsing e.g. 12-15$
+            prices = soup.find_all("span", {"class": "s-item__price"})
             for name, price in zip(names, prices):
                 item_name = name["alt"]
-                item_price = float(''.join(price
-                                           .string.split(' ')[:-1])
+                item_price = float(''.join((price.string or price.find("span", {"class": "ITALIC"}).string)
+                                           .split(' ')[:-1])
                                    .replace('\xa0', '')
                                    .replace(',', '.'))
                 items.append(self.Item(name=item_name, price=item_price))
