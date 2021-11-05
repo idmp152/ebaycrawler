@@ -26,7 +26,7 @@ def main():
     args_parser = argparse.ArgumentParser()
     actions = (
         (("--urls", "-u"), {"dest": "urls", "nargs": '+', "required": True}),
-        (("--mode", "-m"), {"dest": "mode", "choices": ("list",), "required": True}),  # TODO: Create mode strings tuple
+        (("--mode", "-m"), {"dest": "mode", "choices": parsers.MODE_STRINGS, "required": True}),
         (("--file-path", "-fp"), {"dest": "file_path", "nargs": '?'})
     )
     for action in actions:

@@ -37,3 +37,6 @@ class EbayParser:
 class ParsingModes(str, Enum):
     LIST_PAGE = "list"
     # TODO: Do CARD_PAGE parsing
+
+
+MODE_STRINGS = (mode.value for mode in ParsingModes)
