@@ -7,7 +7,7 @@ EbayCrawler is a crawler that parses eBay and writes the data in a file. This pr
 ```cmd
 main.py [-h] --urls URLS [URLS ...] --mode {list} [--file-path [FILE_PATH]]
 ```
-`--urls` or `-u` - required argument that represents urls that have to be passed, e.g.
+`--urls` or `-u` - required argument that represents urls that have to be parsed, e.g.
 ```
 --urls https://www.ebay.com/b/Cars-Trucks/6001/bn_1865117 https://www.ebay.com/b/adidas/bn_21818843
 ```
@@ -19,7 +19,7 @@ or
 ```
 -m=card
 ```
-`--file-path` or `-fp` - optional argument that represents the path where the table with parsed items is saved (./saved_documents/<current_datetime> by default) e.g.
+`--file-path` or `-fp` - optional argument that represents the path where the table with parsed items should be saved (./saved_documents/<current_datetime> by default) e.g.
 ```
 --file-path=./my_folder/test.xlsx
 ```
