@@ -6,11 +6,11 @@ from datetime import datetime
 
 class TableWriter(abc.ABC):
     @abc.abstractmethod
-    def __init__(self, rows: Iterable[Iterable]):
+    def __init__(self, rows: Iterable[Iterable]) -> None:
         pass
 
     @abc.abstractmethod
-    def set_rows(self, rows: Iterable[Iterable]):
+    def set_rows(self, rows: Iterable[Iterable]) -> None:
         pass
 
     @abc.abstractmethod
@@ -19,7 +19,7 @@ class TableWriter(abc.ABC):
 
 
 class ExcelWriter(TableWriter):
-    DEFAULT_FILE_PATH = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
+    DEFAULT_FILE_PATH: str = f"./saved_documents/{datetime.now().strftime('%Y-%m-%dT%H-%M-%S')}.xlsx"
 
     def __init__(self, rows: Iterable[Iterable]) -> None:
         super().__init__(rows)
