@@ -31,9 +31,9 @@ def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
     parser: parsers.EbayParser = parsers.EbayParser(requester)
 
     rows: List = []
-    header_row: Tuple = ("Item", "Price")
+    header_row: Tuple = ("Item", "Price", "Currency")
     for item in parser.parse_items_from_list_pages():
-        rows.append([item.name, item.price])
+        rows.append([item.name, item.price, item.currency])
 
     excel_writer: writers.ExcelWriter = writers.ExcelWriter(rows)
     if file_path is not None:

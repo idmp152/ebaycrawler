@@ -7,6 +7,7 @@ from enum import Enum
 class Item(NamedTuple):
     name: str
     price: float
+    currency: str
 
 
 class EbayPageParser:
@@ -23,11 +24,13 @@ class EbayPageParser:
             prices: bs4.element.ResultSet = soup.find_all("span", {"class": "s-item__price"})
             for name, price in zip(names, prices):
                 item_name = name["alt"]
-                item_price = float(''.join((price.string or price.find("span", {"class": "ITALIC"}).string)
-                                           .split(' ')[:-1])
+                raw_price_and_currency: List[str] = (price.string or price.find("span", {"class": "ITALIC"}).string)\
+                    .split(' ')
+                currency: str = raw_price_and_currency[-1]
+                item_price = float(''.join(raw_price_and_currency[:-1])
                                    .replace('\xa0', '')
                                    .replace(',', '.'))
-                items.append(Item(name=item_name, price=item_price))
+                items.append(Item(name=item_name, price=item_price, currency=currency))
         return tuple(items)
 
     @staticmethod
