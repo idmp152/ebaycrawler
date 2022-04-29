@@ -1,4 +1,4 @@
-![Logo](https://github.com/ov3rwrite/ebaycrawler/raw/main/readme/project_logo.png)
+![Logo](https://media.discordapp.net/attachments/955362477137362954/969693707450323055/project_logo.png?width=1394&height=416)
 ***
 ## Description
 EbayCrawler is a crawler that parses eBay and writes the data in a file. This project is just an experiment and should better not be used in a real situation. eBay has a public API to use instead (see https://developer.ebay.com/api-docs/developer/static/developer-landing.html) and this project is made to learn such libraries as aiohttp or bs4 and to practice my software developing skills.
