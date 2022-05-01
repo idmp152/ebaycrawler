@@ -4,6 +4,7 @@
 [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
 [![GitHub stars](https://badgen.net/github/stars/ov3rwrite/ebaycrawler)](https://GitHub.com/ov3rwrite/ebaycrawler/stargazers/)
 [![GitHub issues](https://badgen.net/github/issues/ov3rwrite/ebaycrawler)](https://GitHub.com/ov3rwrite/ebaycrawler/issues/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
 
 EbayCrawler is a crawler that parses eBay and writes the data in a file. This project is just an experiment and should better not be used in a real situation. eBay has a public API to use instead (see https://developer.ebay.com/api-docs/developer/static/developer-landing.html) and this project is made to learn such libraries as aiohttp or bs4 and to practice my software developing skills.
 
