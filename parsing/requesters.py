@@ -1,18 +1,19 @@
-import aiohttp
 import asyncio
 import abc
-import requests
 from typing import Iterable, Tuple, List
 
+import aiohttp
+import requests
 
 class Requester(abc.ABC):
+    """Requester abstract class"""
     @abc.abstractmethod
     def __init__(self, urls: Iterable[str]) -> None:
         pass
 
     @abc.abstractmethod
     def parse_urls(self) -> Iterable[str]:
-        pass
+        """Requests given urls and returns the responses"""
 
     @abc.abstractmethod
     def _parse_single(self, url) -> str:
@@ -20,10 +21,11 @@ class Requester(abc.ABC):
 
     @abc.abstractmethod
     def set_urls(self, urls: Iterable[str]) -> None:
-        pass
+        """Setter for the inner urls list variable"""
 
 
 class SynchronousRequester(Requester):
+    """Synchronous implementation for the Requester abstract class"""
     def __init__(self, urls: Iterable[str]) -> None:
         super().__init__(urls)
         self.__urls: Iterable[str] = urls
@@ -39,6 +41,7 @@ class SynchronousRequester(Requester):
 
 
 class AsynchronousRequester(Requester):
+    """Asynchronous implementation for the Requester abstract class"""
     def __init__(self, urls: Iterable[str]) -> None:
         super().__init__(urls)
         self.__urls: Iterable[str] = urls

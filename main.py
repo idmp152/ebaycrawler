@@ -1,9 +1,10 @@
+import argparse
+from typing import Iterable, Tuple, List
+
 import parsing.requesters as requesters
 import parsing.parsers as parsers
 import fileio.writers as writers
-import argparse
 
-from typing import Iterable, Tuple, List
 
 URLS_ARG_HELP_STRING: str = (
     """
@@ -27,6 +28,7 @@ FILE_PATH_ARG_HELP_STRING: str = (
 
 
 def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
+    """Ready to use list pages parsing function."""
     requester: requesters.AsynchronousRequester = requesters.AsynchronousRequester(urls)
     parser: parsers.EbayParser = parsers.EbayParser(requester)
 
@@ -37,12 +39,13 @@ def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
 
     excel_writer: writers.ExcelWriter = writers.ExcelWriter(rows)
     if file_path is not None:
-        excel_writer.write_to_file(file_path, header=header_row)
+        excel_writer.write_to_file(file_path, header_row=header_row)
     else:
-        excel_writer.write_to_file(header=header_row)
+        excel_writer.write_to_file(header_row=header_row)
 
 
 def main() -> None:
+    """Main function"""
     args_parser: argparse.ArgumentParser = argparse.ArgumentParser()
     actions: Tuple = (
         (("--urls", "-u"), {"dest": "urls", "nargs": '+', "required": True, "help": URLS_ARG_HELP_STRING}),
