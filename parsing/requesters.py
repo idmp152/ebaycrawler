@@ -63,6 +63,6 @@ class AsynchronousRequester(Requester):
                 tasks.append(task)
             return await asyncio.gather(*tasks)
 
-    async def _parse_single(self, url) -> str:
+    async def _parse_single(self, url) -> str: #pylint: disable = invalid-overridden-method
         async with self.__session.get(url) as response:
             return await response.text()
