@@ -4,6 +4,7 @@ from typing import Iterable, Tuple, List
 from parsing import requesters
 from parsing import parsers
 from fileio import writers
+from __init__ import __version__, __author__ #pylint: disable = import-error
 
 
 URLS_ARG_HELP_STRING: str = (
@@ -26,6 +27,20 @@ FILE_PATH_ARG_HELP_STRING: str = (
     """
 )
 
+TEXT_LOGO: str = (
+    r"""
+       _                                         _           
+      | |                                       | |
+   ___| |__   __ _ _   _  ___ _ __ __ ___      _| | ___ _ __
+  / _ \ '_ \ / _` | | | |/ __| '__/ _` \ \ /\ / / |/ _ \ '__|
+ |  __/ |_) | (_| | |_| | (__| | | (_| |\ V  V /| |  __/ |
+  \___|_.__/ \__,_|\__, |\___|_|  \__,_| \_/\_/ |_|\___|_|
+                    __/ |
+                   |___/
+    """
+)
+
+TEXT_DELIMITER = '-' * max(len(i) for i in TEXT_LOGO.split('\n'))
 
 def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
     """Ready to use list pages parsing function."""
@@ -61,9 +76,13 @@ def main() -> None:
         args_parser.add_argument(*action[0], **action[1])
     args: argparse.Namespace = args_parser.parse_args()
 
+    print(TEXT_LOGO, end='\n\n')
+    print(f"Author: {__author__}  Version: {__version__}")
+    print(TEXT_DELIMITER)
+    print("\u21B3 Parsing...")
     if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
         parse_list_pages(args.urls, args.file_path)
-
+    print("\u21B3 Parsing completed!")
 
 if __name__ == "__main__":
     main()
