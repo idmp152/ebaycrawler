@@ -4,6 +4,7 @@ from enum import Enum
 import bs4
 
 from parsing.requesters import Requester
+
 class Item(NamedTuple):
     """Base Item class"""
     name: str
@@ -24,32 +25,29 @@ class EbayPageParser:
         """Parses every page in the pages list"""
         items: List[Item] = []
         for soup in self.__soups:
-            items.extend(self.__parse_single_page(soup))
+            items.extend(self.__parse_single_list_page(soup))
         return tuple(items)
 
     @staticmethod
-    def __parse_single_page(soup: bs4.BeautifulSoup) -> Tuple[Item]:
+    def __parse_single_list_page(soup: bs4.BeautifulSoup) -> Tuple[Item]:
         """Parses a single page"""
         items: List[Item] = []
         names: bs4.element.ResultSet = soup.find_all("img", {"class": "s-item__image-img"})
         prices: bs4.element.ResultSet = soup.find_all("span", {"class": "s-item__price"})
         for name, price in zip(names, prices):
-            items.append(EbayPageParser.__parse_single_item(name, price))
+            items.append(EbayPageParser.__parse_single_list_item(name, price))
         return tuple(items)
 
     @staticmethod
-    def __parse_single_item(name_element: bs4.PageElement, price_element: bs4.PageElement) -> Item:
+    def __parse_single_list_item(name_element: bs4.PageElement,
+                            price_element: bs4.PageElement) -> Item:
         """Parses a single item"""
-        item_name = name_element["alt"]
-        raw_price_and_currency: List[str] = (price_element.string or
-            price_element.find("span", {"class": "ITALIC"}).string)\
-            .split(' ')
-        currency: str = raw_price_and_currency[-1]
-        item_price = float(''.join(raw_price_and_currency[:-1])
-                            .replace('\xa0', '')
-                            .replace(',', '.'))
+        price_string = price_element.find_next("span",
+                {"class": "ITALIC"}).string.split()[-1].replace(',', '')
+        currency = price_string[0]
+        price = float(price_string.replace(currency, ''))
 
-        return Item(name=item_name, price=item_price, currency=currency)
+        return Item(name=name_element["alt"], price=price, currency=currency)
 
     @staticmethod
     def __get_soups_from_pages(pages: Iterable[str]) -> Tuple[bs4.BeautifulSoup]:
