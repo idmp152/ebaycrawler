@@ -9,7 +9,7 @@ TIME_FORMAT = "%Y-%m-%dT%H-%M-%S"
 
 DEFAULT_SAVE_PATH: pathlib.Path = pathlib.Path(
     f"./saved_documents/{datetime.now().strftime(TIME_FORMAT)}.xlsx")
-DEFAULT_SAVE_PATH.parent.mkdir(parents=True, exist_ok=False)
+DEFAULT_SAVE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
 class TableWriter(abc.ABC):
