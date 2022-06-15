@@ -1,11 +1,12 @@
 import argparse
 from typing import Iterable, Tuple, List
 
+from colorama import Fore, Style
+
 from parsing import requesters
 from parsing import parsers
 from fileio import writers
 from __init__ import __version__, __author__ #pylint: disable = import-error
-
 
 URLS_ARG_HELP_STRING: str = (
     """
@@ -27,16 +28,22 @@ FILE_PATH_ARG_HELP_STRING: str = (
     """
 )
 
+R = Fore.RED
+B = Fore.BLUE
+Y = Fore.YELLOW
+G = Fore.GREEN
+E = Style.RESET_ALL
+
 TEXT_LOGO: str = (
-    r"""
-       _                                         _           
-      | |                                       | |
-   ___| |__   __ _ _   _  ___ _ __ __ ___      _| | ___ _ __
-  / _ \ '_ \ / _` | | | |/ __| '__/ _` \ \ /\ / / |/ _ \ '__|
- |  __/ |_) | (_| | |_| | (__| | | (_| |\ V  V /| |  __/ |
-  \___|_.__/ \__,_|\__, |\___|_|  \__,_| \_/\_/ |_|\___|_|
-                    __/ |
-                   |___/
+    rf"""
+{R}       _          {E}{B}            {E}{Y}                  {E}{G} _{E}
+{R}      | |         {E}{B}            {E}{Y}                  {E}{G}| |{E}
+{R}   ___| |__   __ _{E}{B} _   _  ___ {E}{Y}_ __ __ ___      _{E}{G}| | ___ _ __{E}
+{R}  / _ \ '_ \ / _` {E}{B}| | | |/ __|{E}{Y} '__/ _` \ \ /\ / {E}{G}/ |/ _ \ '__|{E}
+{R} |  __/ |_) | (_| {E}{B}| |_| | (__|{E}{Y} | | (_| |\ V  V /{E}{G}| |  __/ |{E}
+{R}  \___|_.__/ \__,_{E}{B}|\__, |\___|{E}{Y}_|  \__,_| \_/\_/ {E}{G}|_|\___|_|{E}
+{R}                  {E}{B}  __/ |     {E}{Y}                  {E}
+{R}                  {E}{B} |___/      {E}{Y}                  {E}
     """
 )
 
@@ -82,7 +89,7 @@ def main() -> None:
     print("\u21B3 Parsing...")
     if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
         parse_list_pages(args.urls, args.file_path)
-    print("\u21B3 Parsing completed!")
+    print(f"\u21B3 {G}Parsing completed!{E}")
 
 if __name__ == "__main__":
     main()
