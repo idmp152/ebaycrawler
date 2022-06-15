@@ -1,9 +1,9 @@
 import argparse
 from typing import Iterable, Tuple, List
 
-import parsing.requesters as requesters
-import parsing.parsers as parsers
-import fileio.writers as writers
+from parsing import requesters
+from parsing import parsers
+from fileio import writers
 
 
 URLS_ARG_HELP_STRING: str = (
@@ -48,10 +48,14 @@ def main() -> None:
     """Main function"""
     args_parser: argparse.ArgumentParser = argparse.ArgumentParser()
     actions: Tuple = (
-        (("--urls", "-u"), {"dest": "urls", "nargs": '+', "required": True, "help": URLS_ARG_HELP_STRING}),
-        (("--mode", "-m"),
-         {"dest": "mode", "choices": parsers.MODE_STRINGS, "required": True, "help": MODE_ARG_HELP_STRING}),
-        (("--file-path", "-fp"), {"dest": "file_path", "nargs": '?', "help": FILE_PATH_ARG_HELP_STRING})
+        (("--urls", "-u"),
+         {"dest": "urls", "nargs": '+', "required": True, "help": URLS_ARG_HELP_STRING}),
+
+        (("--mode", "-m"), {"dest": "mode",
+         "choices": parsers.MODE_STRINGS, "required": True, "help": MODE_ARG_HELP_STRING}),
+
+        (("--file-path", "-fp"),
+         {"dest": "file_path", "nargs": '?', "help": FILE_PATH_ARG_HELP_STRING})
     )
     for action in actions:
         args_parser.add_argument(*action[0], **action[1])
