@@ -1,12 +1,14 @@
 import argparse
-from typing import Iterable, Tuple, List
+from typing import Iterable, Tuple, List, NamedTuple
 
 from colorama import Fore, Style
 
+#pylint: disable = import-error
 from parsing import requesters
 from parsing import parsers
 from fileio import writers
-from __init__ import __version__, __author__ #pylint: disable = import-error
+from __init__ import __version__, __author__
+#pylint: enable = import-error
 
 URLS_ARG_HELP_STRING: str = (
     """
@@ -49,7 +51,16 @@ TEXT_LOGO: str = (
 
 TEXT_DELIMITER = '-' * max(len(i) for i in TEXT_LOGO.split('\n'))
 
-def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
+class Argument(NamedTuple):
+    """Argument object for the argparse library."""
+    dest: str = None
+    nargs: str = None
+    required: bool = None
+    help: str = None
+    choices: tuple = None
+
+
+def parse_list_pages(urls: Iterable[str], file_path: str = None) -> str:
     """Ready to use list pages parsing function."""
     requester: requesters.AsynchronousRequester = requesters.AsynchronousRequester(urls)
     parser: parsers.EbayParser = parsers.EbayParser(requester)
@@ -61,26 +72,26 @@ def parse_list_pages(urls: Iterable[str], file_path: str = None) -> None:
 
     excel_writer: writers.ExcelWriter = writers.ExcelWriter(rows)
     if file_path is not None:
-        excel_writer.write_to_file(file_path, header_row=header_row)
-    else:
-        excel_writer.write_to_file(header_row=header_row)
+        return excel_writer.write_to_file(file_path, header_row=header_row)
+    return excel_writer.write_to_file(header_row=header_row)
 
 
 def main() -> None:
     """Main function"""
     args_parser: argparse.ArgumentParser = argparse.ArgumentParser()
-    actions: Tuple = (
-        (("--urls", "-u"),
-         {"dest": "urls", "nargs": '+', "required": True, "help": URLS_ARG_HELP_STRING}),
+    actions: dict = {
+        ("--urls", "-u"):
+        Argument(dest="urls", nargs='+', required=True, help=URLS_ARG_HELP_STRING),
 
-        (("--mode", "-m"), {"dest": "mode",
-         "choices": parsers.MODE_STRINGS, "required": True, "help": MODE_ARG_HELP_STRING}),
+        ("--mode", "-m"):
+        Argument(dest="mode", choices=parsers.MODE_STRINGS,
+                        required=True, help=MODE_ARG_HELP_STRING),
 
-        (("--file-path", "-fp"),
-         {"dest": "file_path", "nargs": '?', "help": FILE_PATH_ARG_HELP_STRING})
-    )
-    for action in actions:
-        args_parser.add_argument(*action[0], **action[1])
+        ("--file-path", "-fp"):
+         Argument(dest="file_path", nargs='?', help=FILE_PATH_ARG_HELP_STRING)
+    }
+    for flags, argument in actions.items():
+        args_parser.add_argument(*flags, **argument._asdict())
     args: argparse.Namespace = args_parser.parse_args()
 
     print(TEXT_LOGO, end='\n\n')
@@ -88,8 +99,8 @@ def main() -> None:
     print(TEXT_DELIMITER)
     print("\u21B3 Parsing...")
     if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
-        parse_list_pages(args.urls, args.file_path)
-    print(f"\u21B3 {G}Parsing completed!{E}")
+        saved_path = parse_list_pages(args.urls, args.file_path)
+    print(f"\u21B3 {G}Parsing completed!{E} Saved to -> {saved_path}")
 
 if __name__ == "__main__":
     main()

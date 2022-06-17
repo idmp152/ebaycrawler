@@ -38,5 +38,6 @@ class ExcelWriter(TableWriter):
         self.__dataframe = pd.DataFrame(data=rows)
 
     def write_to_file(self, file_path: str = DEFAULT_SAVE_PATH,
-                            header_row: Iterable[str] = None) -> None:
+                            header_row: Iterable[str] = None) -> str:
         self.__dataframe.to_excel(file_path, index=False, header=header_row)
+        return file_path
