@@ -99,10 +99,14 @@ def main() -> None:
     print(f"Author: {__author__} <{__author_email__}>  Version: {__version__}")
     print(TEXT_DELIMITER)
     logger.info("Parsing...")
-    if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
-        saved_path = parse_list_pages(args.urls, args.file_path)
-    logger.success("Parsing completed!")
-    logger.info("Saved to -> %s", saved_path)
+    try:
+        if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
+            saved_path = parse_list_pages(args.urls, args.file_path)
+        logger.success("Parsing completed!")
+        logger.info("Saved to -> %s", saved_path)
+    except Exception as error: #pylint: disable = broad-except
+        logger.error('Error! Exceptions caught:')
+        logger.debug(str(error))
 
 if __name__ == "__main__":
     main()
