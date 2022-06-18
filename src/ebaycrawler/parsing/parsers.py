@@ -3,7 +3,8 @@ from enum import Enum
 
 import bs4
 
-from parsing.requesters import Requester
+from ebaycrawler.parsing.requesters import Requester #pylint: disable = import-error
+from ebaycrawler.logger import logger # pyright: reportMissingImports=false
 
 class Item(NamedTuple):
     """Base Item class"""
@@ -58,6 +59,7 @@ class EbayParser:
     """EbayPageParser and Requester mediator class"""
     def __init__(self, requester: Requester):
         self.__requester: Requester = requester
+        logger.info("Requesting...")
         self.__page_parser: EbayPageParser = EbayPageParser(self.__requester.parse_urls())
 
     def parse_items_from_list_pages(self) -> Tuple[Item]:

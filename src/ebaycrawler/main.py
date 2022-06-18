@@ -4,10 +4,11 @@ from typing import Iterable, Tuple, List, NamedTuple
 from colorama import Fore, Style
 
 #pylint: disable = import-error
-from parsing import requesters
-from parsing import parsers
-from fileio import writers
-from __init__ import __version__, __author__
+from ebaycrawler.parsing import requesters
+from ebaycrawler.parsing import parsers
+from ebaycrawler.fileio import writers
+from ebaycrawler.logger import logger
+from ebaycrawler.__init__ import __version__, __author__, __author_email__ #pylint: disable = no-name-in-module
 #pylint: enable = import-error
 
 URLS_ARG_HELP_STRING: str = (
@@ -95,12 +96,13 @@ def main() -> None:
     args: argparse.Namespace = args_parser.parse_args()
 
     print(TEXT_LOGO, end='\n\n')
-    print(f"Author: {__author__}  Version: {__version__}")
+    print(f"Author: {__author__} <{__author_email__}>  Version: {__version__}")
     print(TEXT_DELIMITER)
-    print("\u21B3 Parsing...")
+    logger.info("Parsing...")
     if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
         saved_path = parse_list_pages(args.urls, args.file_path)
-    print(f"\u21B3 {G}Parsing completed!{E} Saved to -> {saved_path}")
+    logger.success("Parsing completed!")
+    logger.info("Saved to -> %s", saved_path)
 
 if __name__ == "__main__":
     main()
