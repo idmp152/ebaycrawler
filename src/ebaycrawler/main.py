@@ -1,13 +1,14 @@
 import argparse
-from typing import Iterable, Tuple, List, NamedTuple
+import logging
+from typing import Iterable, Tuple, List, NamedTuple, Callable, Any, Type
 
 from colorama import Fore, Style
 
 #pylint: disable = import-error
-from ebaycrawler.parsing import requesters
-from ebaycrawler.parsing import parsers
+from ebaycrawler.parsing import requesters, parsers
 from ebaycrawler.fileio import writers
 from ebaycrawler.logger import logger
+from ebaycrawler import exceptions
 from ebaycrawler.__init__ import __version__, __author__, __author_email__ #pylint: disable = no-name-in-module
 #pylint: enable = import-error
 
@@ -72,11 +73,32 @@ def parse_list_pages(urls: Iterable[str], file_path: str = None) -> str:
     for item in parser.parse_items_from_list_pages():
         rows.append([item.name, item.price, item.currency])
 
-    excel_writer: writers.ExcelWriter = writers.ExcelWriter(rows)
+    file_format = file_path.split('.')[-1]
+    writer_type: Type[writers.TableWriter] = writers.get_writer_by_extension(file_format)
+    if writer_type is None:
+        raise exceptions.UnknownFileFormatException(file_format)
+    writer: writers.TableWriter = writer_type(rows)
     if file_path is not None:
-        return excel_writer.write_to_file(file_path, header_row=header_row)
-    return excel_writer.write_to_file(header_row=header_row)
+        return writer.write_to_file(file_path, header_row=header_row)
+    return writer.write_to_file(header_row=header_row)
 
+def get_method_by_mode(mode: str) -> Callable | None:
+    """Gets parsing method by mode string"""
+    if parsers.ParsingModes(mode) == parsers.ParsingModes.LIST_PAGE:
+        return parse_list_pages
+
+def handle_exceptions(func: Callable, *args, **kwargs) -> Any:
+    """Handles occuring exceptions"""
+    try:
+        logger.info("Parsing...")
+        return_value = func(*args, **kwargs)
+        logger.success("Parsing completed!")
+        return return_value
+    except exceptions.UnknownFileFormatException as error:
+        logger.error("Error! Unknown file format: .%s", error.file_format)
+    except BaseException as error: #pylint: disable = broad-except
+        logger.error('Error! Unexpected exceptions caught:')
+        logger.debug(str(error))
 
 def main() -> None:
     """Main function"""
@@ -99,15 +121,8 @@ def main() -> None:
     print(TEXT_LOGO, end='\n\n')
     print(f"Author: {__author__} <{__author_email__}>  Version: {__version__}")
     print(TEXT_DELIMITER)
-    logger.info("Parsing...")
-    try:
-        if parsers.ParsingModes(args.mode) == parsers.ParsingModes.LIST_PAGE:
-            saved_path = parse_list_pages(args.urls, args.file_path)
-        logger.success("Parsing completed!")
-        logger.info("Saved to -> %s", saved_path)
-    except Exception as error: #pylint: disable = broad-except
-        logger.error('Error! Exceptions caught:')
-        logger.debug(str(error))
+    path = handle_exceptions(get_method_by_mode(args.mode), args.urls, args.file_path)
+    logging.info("Saved to -> %s", path)
 
 if __name__ == "__main__":
     main()
