@@ -50,7 +50,8 @@ TEXT_LOGO: str = (
     """
 )
 
-TEXT_DELIMITER = '-' * max(len(i) for i in TEXT_LOGO.split('\n'))
+SEGMENT_LENS = (len(R + E), len(B + E), len(Y + E), len(G + E))
+TEXT_DELIMITER = '-' * (max(len(line) for line in TEXT_LOGO.split('\n')) - sum(SEGMENT_LENS))
 
 class Argument(NamedTuple):
     """Argument object for the argparse library."""
