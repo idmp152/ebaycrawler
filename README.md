@@ -24,7 +24,7 @@
 
   <sub>
   Readme inspiration:
-  <a href="https://github.com/miraclx/freyr-js">freyr-ls</a>
+  <a href="https://github.com/miraclx/freyr-js">freyr-js</a>
 
 </div>
 
@@ -64,3 +64,4 @@ or
 ```
 Supported file formats:
 - `xlsx`
+- `csv`
