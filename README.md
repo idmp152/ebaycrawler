@@ -4,32 +4,20 @@
 [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
 [![GitHub stars](https://badgen.net/github/stars/ov3rwrite/ebaycrawler)](https://GitHub.com/ov3rwrite/ebaycrawler/stargazers/)
 [![GitHub issues](https://badgen.net/github/issues/ov3rwrite/ebaycrawler)](https://GitHub.com/ov3rwrite/ebaycrawler/issues/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+![Maintenance](https://img.shields.io/maintenance/yes/2022)
+![PyPi](https://img.shields.io/pypi/v/ebaycrawler)
 
 EbayCrawler is a crawler that parses eBay and writes the data in a file. This project is just an experiment and should better not be used in a real situation. eBay has a public API to use instead (see https://developer.ebay.com/api-docs/developer/static/developer-landing.html) and this project is made to learn such libraries as aiohttp or bs4 and to practice my software developing skills.
 
 ## Installation
 
 ```cmd
-git clone https://github.com/ov3rwrite/ebaycrawler.git
-cd ebaycrawler
+pip install ebaycrawler
 ```
-
-## Dependencies
-```cmd
-cd ebaycrawler 
-pip install -r requirements.txt
-```
-
-- `bs4`
-- `asyncio`
-- `aiohttp`
-- `requests`
-- `pandas`
 
 ## Usage
 ```cmd
-main.py [-h] --urls URLS [URLS ...] --mode {list} [--file-path [FILE_PATH]]
+ebaycrawler [-h] --urls URLS [URLS ...] --mode {list} [--file-path [FILE_PATH]]
 ```
 `--urls` or `-u` - a required argument that represents the urls that have to be parsed, e.g.
 ```
