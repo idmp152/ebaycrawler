@@ -122,7 +122,7 @@ def main() -> None:
     print(f"Author: {__author__} <{__author_email__}>  Version: {__version__}")
     print(TEXT_DELIMITER)
     path = handle_exceptions(get_method_by_mode(args.mode), args.urls, args.file_path)
-    logging.info("Saved to -> %s", path)
+    logger.info("Saved to -> %s", path)
 
 if __name__ == "__main__":
     main()
