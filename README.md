@@ -30,7 +30,7 @@
 
 ## Demo
   
-![Demo](https://media.discordapp.net/attachments/955362477137362954/988069242870054912/ebaycrawler.gif)
+![Demo](https://media.discordapp.net/attachments/955362477137362954/988072197111304212/ebaycrawler.gif)
   
 ## Description
   
