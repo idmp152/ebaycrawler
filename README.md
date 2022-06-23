@@ -17,7 +17,7 @@
   ![Commits](https://img.shields.io/github/commit-activity/m/ov3rwrite/ebaycrawler)
   
   [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-383/)
-  [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
+  ![License: MIT](https://img.shields.io/github/license/ov3rwrite/ebaycrawler)
 
   <sub>Built with ❤︎ by
   <a href="https://github.com/ov3rwrite">ov3rwrite</a>
