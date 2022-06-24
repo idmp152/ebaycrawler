@@ -1,5 +1,4 @@
 import argparse
-import logging
 from typing import Iterable, Tuple, List, NamedTuple, Callable, Any, Type
 
 from colorama import Fore, Style
