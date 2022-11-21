@@ -15,6 +15,7 @@ setup(
     version="0.1.14",
     packages=find_packages("src"),
     package_dir={'': "src"},
+    include_package_data=True,
     author="ov3rwrite",
     author_email="ilyabelykh123@gmail.com",
     install_requires = requirements,
