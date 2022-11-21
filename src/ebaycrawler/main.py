@@ -1,7 +1,7 @@
 import argparse
 from typing import Iterable, Tuple, List, NamedTuple, Callable, Any, Type
-
-from colorama import Fore, Style
+from datetime import datetime
+import pathlib
 
 #pylint: disable = import-error
 from ebaycrawler.parsing import requesters, parsers
@@ -31,26 +31,26 @@ FILE_PATH_ARG_HELP_STRING: str = (
     """
 )
 
-R = Fore.RED
-B = Fore.BLUE
-Y = Fore.YELLOW
-G = Fore.GREEN
-E = Style.RESET_ALL
+R = "\u001b[31m"
+B = "\u001b[34m"
+Y = "\u001b[33m"
+G = "\u001b[32m"
+E = "\u001b[0m"
 
 TEXT_LOGO: str = (
     rf"""
-{R}       _          {E}{B}            {E}{Y}                  {E}{G} _{E}
-{R}      | |         {E}{B}            {E}{Y}                  {E}{G}| |{E}
-{R}   ___| |__   __ _{E}{B} _   _  ___ {E}{Y}_ __ __ ___      _{E}{G}| | ___ _ __{E}
-{R}  / _ \ '_ \ / _` {E}{B}| | | |/ __|{E}{Y} '__/ _` \ \ /\ / {E}{G}/ |/ _ \ '__|{E}
-{R} |  __/ |_) | (_| {E}{B}| |_| | (__|{E}{Y} | | (_| |\ V  V /{E}{G}| |  __/ |{E}
-{R}  \___|_.__/ \__,_{E}{B}|\__, |\___|{E}{Y}_|  \__,_| \_/\_/ {E}{G}|_|\___|_|{E}
-{R}                  {E}{B}  __/ |     {E}{Y}                  {E}
-{R}                  {E}{B} |___/      {E}{Y}                  {E}
+{R}       _          {B}            {Y}                  {G} _{E}
+{R}      | |         {B}            {Y}                  {G}| |{E}
+{R}   ___| |__   __ _{B} _   _  ___ {Y}_ __ __ ___      _{G}| | ___ _ __{E}
+{R}  / _ \ '_ \ / _` {B}| | | |/ __|{Y} '__/ _` \ \ /\ / {G}/ |/ _ \ '__|{E}
+{R} |  __/ |_) | (_| {B}| |_| | (__|{Y} | | (_| |\ V  V /{G}| |  __/ |{E}
+{R}  \___|_.__/ \__,_{B}|\__, |\___|{Y}_|  \__,_| \_/\_/ {G}|_|\___|_|{E}
+{R}                  {B}  __/ |     {Y}                  {E}
+{R}                  {B} |___/      {Y}                  {E}
     """
 )
 
-SEGMENT_LENS = (len(R + E), len(B + E), len(Y + E), len(G + E))
+SEGMENT_LENS = (len(R), len(B), len(Y), len(G), len(E))
 TEXT_DELIMITER = '-' * (max(len(line) for line in TEXT_LOGO.split('\n')) - sum(SEGMENT_LENS))
 
 class Argument(NamedTuple):
@@ -62,8 +62,17 @@ class Argument(NamedTuple):
     choices: tuple = None
 
 
-def parse_list_pages(urls: Iterable[str], file_path: str = None) -> str:
+TIME_FORMAT = "%Y-%m-%dT%H-%M-%S"
+
+DEFAULT_SAVE_PATH: pathlib.Path = pathlib.Path(
+    f"./saved_documents/{datetime.now().strftime(TIME_FORMAT)}.csv")
+DEFAULT_SAVE_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+def parse_list_pages(urls: Iterable[str], file_path: str) -> str:
     """Ready to use list pages parsing function."""
+    if file_path is None:
+        file_path = str(DEFAULT_SAVE_PATH)
+
     requester: requesters.AsynchronousRequester = requesters.AsynchronousRequester(urls)
     parser: parsers.EbayParser = parsers.EbayParser(requester)
 
@@ -74,17 +83,18 @@ def parse_list_pages(urls: Iterable[str], file_path: str = None) -> str:
 
     file_format = file_path.split('.')[-1]
     writer_type: Type[writers.TableWriter] = writers.get_writer_by_extension(file_format)
+
     if writer_type is None:
         raise exceptions.UnknownFileFormatException(file_format)
     writer: writers.TableWriter = writer_type(rows)
-    if file_path is not None:
-        return writer.write_to_file(file_path, header_row=header_row)
-    return writer.write_to_file(header_row=header_row)
+
+    return writer.write_to_file(file_path ,header_row=header_row)
 
 def get_method_by_mode(mode: str) -> Callable | None:
     """Gets parsing method by mode string"""
     if parsers.ParsingModes(mode) == parsers.ParsingModes.LIST_PAGE:
         return parse_list_pages
+    return None
 
 def handle_exceptions(func: Callable, *args, **kwargs) -> Any:
     """Handles occuring exceptions"""
@@ -98,6 +108,7 @@ def handle_exceptions(func: Callable, *args, **kwargs) -> Any:
     except BaseException as error: #pylint: disable = broad-except
         logger.error('Error! Unexpected exceptions caught:')
         logger.debug(str(error))
+    return None
 
 def main() -> None:
     """Main function"""

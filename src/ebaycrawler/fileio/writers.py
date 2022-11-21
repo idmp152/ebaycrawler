@@ -1,16 +1,7 @@
 import abc
-import pathlib
 from typing import Iterable, Type
-from datetime import datetime
 
 import pandas as pd
-
-TIME_FORMAT = "%Y-%m-%dT%H-%M-%S"
-
-DEFAULT_SAVE_PATH: pathlib.Path = pathlib.Path(
-    f"./saved_documents/{datetime.now().strftime(TIME_FORMAT)}.xlsx")
-DEFAULT_SAVE_PATH.parent.mkdir(parents=True, exist_ok=True)
-
 
 class TableWriter(abc.ABC):
     """Table-format writer abstract class"""
@@ -37,8 +28,7 @@ class ExcelWriter(TableWriter):
     def set_rows(self, rows: Iterable[Iterable]) -> None:
         self.__dataframe = pd.DataFrame(data=rows)
 
-    def write_to_file(self, file_path: str = DEFAULT_SAVE_PATH,
-                            header_row: Iterable[str] = None) -> str:
+    def write_to_file(self, file_path: str, header_row: Iterable[str] = None) -> str:
         self.__dataframe.to_excel(file_path, index=False, header=header_row)
         return file_path
 
@@ -52,8 +42,7 @@ class CsvWriter(TableWriter):
     def set_rows(self, rows: Iterable[Iterable]) -> None:
         self.__dataframe = pd.DataFrame(data=rows)
 
-    def write_to_file(self, file_path: str = DEFAULT_SAVE_PATH,
-                            header_row: Iterable[str] = None) -> str:
+    def write_to_file(self, file_path: str, header_row: Iterable[str] = None) -> str:
         self.__dataframe.to_csv(file_path, index=False, header=header_row)
         return file_path
 
