@@ -1,21 +1,19 @@
 import logging
 
-from colorama import Style, Fore
-
 logging.SUCCESS = logging.INFO
 
 class ColoredFormatter(logging.Formatter):
     """Colored logging formatter"""
 
-    OUTPUT_FORMAT = f"\u21B3 {{0}} %(message)s {Style.RESET_ALL}"
+    OUTPUT_FORMAT = "\u21B3 {0} %(message)s \u001b[0m"
 
     FORMATS = {
         logging.DEBUG: OUTPUT_FORMAT.format(''),
         logging.INFO: OUTPUT_FORMAT.format(''),
-        logging.WARNING: OUTPUT_FORMAT.format(Fore.YELLOW),
-        logging.ERROR: OUTPUT_FORMAT.format(Fore.LIGHTRED_EX),
-        logging.CRITICAL: OUTPUT_FORMAT.format(Fore.RED),
-        logging.SUCCESS: OUTPUT_FORMAT.format(Fore.GREEN)
+        logging.WARNING: OUTPUT_FORMAT.format("\u001b[33m"),
+        logging.ERROR: OUTPUT_FORMAT.format("\u001b[31;1m"),
+        logging.CRITICAL: OUTPUT_FORMAT.format("\u001b[31m"),
+        logging.SUCCESS: OUTPUT_FORMAT.format("\u001b[32m")
     }
 
     def format(self, record):
