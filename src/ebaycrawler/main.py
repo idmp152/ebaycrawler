@@ -31,27 +31,13 @@ FILE_PATH_ARG_HELP_STRING: str = (
     """
 )
 
-R = "\u001b[31m"
-B = "\u001b[34m"
-Y = "\u001b[33m"
-G = "\u001b[32m"
-E = "\u001b[0m"
+LOGO_PATH = pathlib.Path(__file__).parent /  "./logo.ansi"
+TEXT_LOGO: str
+with open(LOGO_PATH, "r", encoding="utf-8") as logo_file:
+    TEXT_LOGO = logo_file.read()
 
-TEXT_LOGO: str = (
-    rf"""
-{R}       _          {B}            {Y}                  {G} _{E}
-{R}      | |         {B}            {Y}                  {G}| |{E}
-{R}   ___| |__   __ _{B} _   _  ___ {Y}_ __ __ ___      _{G}| | ___ _ __{E}
-{R}  / _ \ '_ \ / _` {B}| | | |/ __|{Y} '__/ _` \ \ /\ / {G}/ |/ _ \ '__|{E}
-{R} |  __/ |_) | (_| {B}| |_| | (__|{Y} | | (_| |\ V  V /{G}| |  __/ |{E}
-{R}  \___|_.__/ \__,_{B}|\__, |\___|{Y}_|  \__,_| \_/\_/ {G}|_|\___|_|{E}
-{R}                  {B}  __/ |     {Y}                  {E}
-{R}                  {B} |___/      {Y}                  {E}
-    """
-)
-
-SEGMENT_LENS = (len(R), len(B), len(Y), len(G), len(E))
-TEXT_DELIMITER = '-' * (max(len(line) for line in TEXT_LOGO.split('\n')) - sum(SEGMENT_LENS))
+COLOR_SEGMENTS_LENGTH = 24
+TEXT_DELIMITER = '-' * (max(len(line) for line in TEXT_LOGO.split('\n')) - COLOR_SEGMENTS_LENGTH)
 
 class Argument(NamedTuple):
     """Argument object for the argparse library."""
