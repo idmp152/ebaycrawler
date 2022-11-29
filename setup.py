@@ -12,7 +12,7 @@ requirements = [
 
 setup(
     name="ebaycrawler",
-    version="0.1.14",
+    version="0.1.15",
     packages=find_packages("src"),
     package_dir={'': "src"},
     include_package_data=True,

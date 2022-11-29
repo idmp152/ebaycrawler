@@ -1,4 +1,5 @@
 import argparse
+import traceback
 from typing import Iterable, Tuple, List, NamedTuple, Callable, Any, Type
 from datetime import datetime
 import pathlib
@@ -93,7 +94,8 @@ def handle_exceptions(func: Callable, *args, **kwargs) -> Any:
         logger.error("Error! Unknown file format: .%s", error.file_format)
     except BaseException as error: #pylint: disable = broad-except
         logger.error('Error! Unexpected exceptions caught:')
-        logger.debug(str(error))
+        logger.error(str(error))
+        logger.debug(traceback.format_exc())
     return None
 
 def main() -> None:
