@@ -8,7 +8,7 @@
     Parse items from eBay.
   </h4>
   
-  ![Maintenance](https://img.shields.io/maintenance/yes/2022)
+  ![Maintenance](https://img.shields.io/maintenance/yes/2023)
   ![PyPi](https://img.shields.io/pypi/v/ebaycrawler)
   ![CodeFactor](https://www.codefactor.io/repository/github/ov3rwrite/ebaycrawler/badge)
   
