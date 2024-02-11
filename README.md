@@ -20,7 +20,7 @@
   ![License: MIT](https://img.shields.io/github/license/ov3rwrite/ebaycrawler)
 
   <sub>Built with ❤︎ by
-  <a href="https://github.com/ov3rwrite">ov3rwrite</a>
+  <a href="https://github.com/idmp152">idmp152</a>
 
   <sub>
   Readme inspiration:
